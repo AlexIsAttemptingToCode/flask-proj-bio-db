@@ -28,7 +28,7 @@ The required packages can be viewed in the same file otherwise.
 
 
 ## IMPORTANT!
-Th database can be crated using the associated dumpfile within the repository in MySQL.
+Th database can be crated using the query_create... file or associated dumpfile within the repository in MySQL.
 
 The db_config may need to be modified within **app.py** if anything varies such as user or password:
 ```
