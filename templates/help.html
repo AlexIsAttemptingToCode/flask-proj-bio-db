@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2> Help & Documentation</h2>
+    <hr>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-info text-white">How to Search</div>
+                <div class="card-body">
+                    <p>You can search the database using two methods:</p>
+                    <ul>
+                        <li><strong>UniProt ID:</strong> Enter a specific ID (e.g., P0DTC2). If the protein is not in our database, the system will attempt to download it automatically.</li>
+                        <li><strong>Protein Name:</strong> Enter a keyword (e.g., Spike or Insulin).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">API Usage</div>
+                <div class="card-body">
+                    <p>Developers can access raw JSON data via our REST API.</p>
+                    <p><strong>Endpoint:</strong> /api/protein/&lt;ID&gt;</p>
+                    <p><strong>Example:</strong> <a href="/api/protein/P0DTC2" target="_blank">/api/protein/P0DTC2</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

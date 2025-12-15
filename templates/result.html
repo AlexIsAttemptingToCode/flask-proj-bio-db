@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2>Results for "{{ query }}"</h2>
+        <a href="/" class="btn btn-outline-secondary btn-sm">← Back to Home</a>
+    </div>
+</div>
+
+{% if results %}
+    <div class="card mb-4 border-primary">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"> Protein Details (From UniProt)</h5>
+        </div>
+        <div class="card-body">
+            <h4>{{ results[0].name }} <span class="badge bg-secondary">{{ results[0].uniprot_id }}</span></h4>
+            
+            <p><strong>Total Sequence Length:</strong> {{ results[0].sequence | length }} amino acids</p>
+            
+            <details>
+                <summary><strong>View Full Amino Acid Sequence</strong></summary>
+                <div class="p-3 mt-2 bg-light border rounded" style="font-family: monospace; word-break: break-all;">
+                    {{ results[0].sequence }}
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Structure Methods</h5>
+                    <canvas id="methodChart" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+             <div class="card h-100 d-flex align-items-center justify-content-center p-4 bg-light">
+                 <div class="text-center">
+                     <h1>{{ results|length }}</h1>
+                     <p class="lead">Available 3D Structures</p>
+                 </div>
+             </div>
+        </div>
+    </div>
+
+    <h3>Available Structures (From PDB)</h3>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>PDB ID</th>
+                <th>Method</th>
+                <th>Resolution</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in results %}
+            <tr>
+                <td><strong>{{ row.pdb_id }}</strong></td>
+                <td>{{ row.method }}</td>
+                <td>
+                        <span class="fw-bold">{{ row.resolution }} Å</span>
+                </td>
+                <td>
+                    <a href="https://www.rcsb.org/structure/{{ row.pdb_id }}" target="_blank" class="btn btn-sm btn-primary">View 3D</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // Chart
+        const ctx = document.getElementById('methodChart').getContext('2d');
+
+        // Define variables using Jinja
+        const chartLabels = {{ stats.keys() | list | tojson }};
+        const chartData = {{ stats.values() | list | tojson }};
+
+        // Create the Chart
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: '# of Structures by Method',
+                    data: chartData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+{% else %}
+    <div class="alert alert-warning">
+        <h4>No results found for "{{ query }}"</h4>
+        <p>If this is a valid UniProt ID (e.g., P12345), try searching again!</p>
+    </div>
+{% endif %}
+
+{% endblock %}
