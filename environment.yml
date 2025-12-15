@@ -48,4 +48,3 @@ dependencies:
   - xz=5.6.4=h46256e1_1
   - zlib=1.2.13=h4b97444_1
   - zstd=1.5.6=h138b38a_0
-prefix: /Users/alex/miniconda3/envs/flask_proj_env
